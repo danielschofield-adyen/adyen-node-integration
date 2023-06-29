@@ -62,12 +62,12 @@ app.post("/api/sessions", async (req, res) => {
       merchantAccount: process.env.ADYEN_MERCHANT_ACCOUNT, // required
       reference: orderRef, // required: your Payment Reference
       returnUrl: `${protocol}://${localhost}/checkout?orderRef=${orderRef}`, // set redirect URL required for some payment methods (ie iDEAL)
-      shopperReference:"daniels",
-      shopperEmail:"daniel.schofield@adyen.com",
+      shopperReference: process.env.SHOPPER_REFERENCE,
+      shopperEmail: process.env.SHOPPER_EMAIL,
       recurring:{ contract:"RECURRING,ONECLICK"},
       // set lineItems required for some payment methods (ie Klarna)
       lineItems: [
-        {quantity: 1, amountIncludingTax: 1595 , description: "HOT & CRISPY™ ZINGER® CRUNCH BURGER™ BOX"}
+        {quantity: 1, amountIncludingTax: 1000 , description: "item"}
       ] 
     });
 
@@ -83,7 +83,7 @@ app.post("/api/getPaymentMethods", async (req, res) => {
     const response = await checkout.paymentMethods({
       channel: "Web",
       merchantAccount: process.env.ADYEN_MERCHANT_ACCOUNT,
-      shopperReference:"daniels",
+      shopperReference: process.env.SHOPPER_REFERENCE,
     });
     res.json(response);
   } catch (err) {
@@ -118,13 +118,13 @@ app.post("/api/initiatePayment", async (req, res) => {
       paymentMethod: req.body.paymentMethod, // required
       shopperInteraction:"Ecommerce",
       recurringProcessingModel: "CardOnFile",
-      shopperReference:"daniels",
-      shopperEmail:"daniel.schofield@adyen.com",
+      shopperReference: process.env.SHOPPER_REFERENCE,
+      shopperEmail: process.env.SHOPPER_EMAIL,
       recurring:{ contract:"RECURRING,ONECLICK"},
       storePaymentMethod:true,
       // set lineItems required for some payment methods (ie Klarna)
       lineItems: [
-        {quantity: 1, amountIncludingTax: 1595 , description: "HOT & CRISPY™ ZINGER® CRUNCH BURGER™ BOX"}
+        {quantity: 1, amountIncludingTax: 1000 , description: "item"}
       ] 
     });
  
